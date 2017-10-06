@@ -1,0 +1,16 @@
+{
+  "summary": [
+    {
+      "name": "bind_address"
+    },
+    {
+      "name": "product"
+    },
+    {
+      "name": "version"
+    },
+    {
+      "name": "server_state"
+    }
+  ]
+}

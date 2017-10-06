@@ -1,0 +1,19 @@
+{
+  "summary": [
+    {
+      "name": "id"
+    },
+    {
+      "name": "name"
+    },
+    {
+      "name": "feed"
+    },
+    {
+      "name": "type_path"
+    },
+    {
+      "name": "path"
+    }
+  ]
+}
