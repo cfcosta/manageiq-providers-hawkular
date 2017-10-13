@@ -1,4 +1,4 @@
-require 'uri'
+require 'cgi'
 
 module ManageIQ
   module Providers
@@ -13,8 +13,7 @@ module ManageIQ
         end
 
         def map
-          feed = @data[:resourceTypePath]
-            .match(/;([0-9a-zA-Z]+)\/rt/)[1]
+          feed = @data[:resourceTypePath].match(/;([0-9a-zA-Z]+)\/rt/)[1]
 
           properties = @data
             .delete(:properties)
@@ -23,12 +22,12 @@ module ManageIQ
             .symbolize_keys
 
           {
-            id: @data.delete(:id),
-            feed: feed,
-            name: @data.delete(:name),
-            path: @data.delete(:path),
-            properties: properties,
-            type_path: URI.unescape(@data.delete(:resourceTypePath))
+            :id         => @data.delete(:id),
+            :feed       => feed,
+            :name       => @data.delete(:name),
+            :path       => @data.delete(:path),
+            :properties => properties,
+            :type_path  => CGI.unescape(@data.delete(:resourceTypePath))
           }.merge(@data)
         end
       end

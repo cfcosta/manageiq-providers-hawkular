@@ -8,9 +8,9 @@ module ManageIQ
           root = File.expand_path('../schemas', __dir__)
           file = File.join(root, 'middleware_resource_view.json')
 
-          json File.read(file)
+          json(File.read(file))
 
-          applies_to ::ManageIQ::Providers::Hawkular::Entities::MiddlewareResource
+          applies_to(::ManageIQ::Providers::Hawkular::Entities::MiddlewareResource)
         end
       end
     end

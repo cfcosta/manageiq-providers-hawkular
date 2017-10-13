@@ -20,12 +20,11 @@ module ManageIQ
         end
 
         def prepared
-          servers = entities.select { |x| x.is_a? Entities::MiddlewareServer }
+          servers = entities.select { |x| x.kind_of?(Entities::MiddlewareServer) }
           resources = (entities - servers).group_by(&:feed)
 
-
           servers.each do |server|
-            server.properties.reverse_merge!(resources.inject({}) { |accum,el| accum.merge(el.properties)})
+            server.properties.reverse_merge!(resources.inject({}) { |accum, el| accum.merge(el.properties) })
           end
 
           entities
