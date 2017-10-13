@@ -6,10 +6,10 @@ module ManageIQ
       module Entities
         # A specialized version of MiddlewareServer for servers running WildFly.
         class WildflyServer < MiddlewareServer
-          attribute :metrics, String
-          attribute :bind_address, String
-          attribute :product, String
-          attribute :version, String
+          attribute(:metrics, String)
+          attribute(:bind_address, String)
+          attribute(:product, String)
+          attribute(:version, String)
 
           # Returns if this entity is appliable for given metadata.
           def self.applicable?(data)
