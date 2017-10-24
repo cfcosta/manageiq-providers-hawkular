@@ -13,7 +13,7 @@ module ManageIQ
         end
 
         def entities
-          @entities ||= data.map do |d|
+          @entities ||= data.flat_map do |d|
             data = EntityMapper.map(d)
             GenericViewMapper.matcher.find_entity_for(data).new(data)
           end
@@ -24,7 +24,7 @@ module ManageIQ
           resources = (entities - servers).group_by(&:feed)
 
           servers.each do |server|
-            server.properties.reverse_merge!(resources.inject({}) { |accum, el| accum.merge(el.properties) })
+            server.properties.reverse_merge!(resources[server.feed].inject({}) { |accum, el| accum.merge(el.properties) })
           end
 
           entities
