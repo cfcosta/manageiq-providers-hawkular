@@ -6,7 +6,7 @@ module ManageIQ
       module Entities
         class HawkularAgent < MiddlewareResource
           def self.applicable?(metadata)
-            metadata[:type_path].include?('Hawkular WildFly Agent')
+            metadata[:type][:id] == 'Hawkular WildFly Agent'
           end
         end
       end

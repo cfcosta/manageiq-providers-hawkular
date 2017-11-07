@@ -8,27 +8,32 @@ module ManageIQ
           new(data).map
         end
 
+        attr_reader :data
+
         def initialize(data)
           @data = data.dup.symbolize_keys
         end
 
         def map
-          feed = @data[:resourceTypePath].match(/;([0-9a-zA-Z]+)\/rt/)[1]
+          properties = clean_up_keys(data.delete(:properties))
+          config = clean_up_keys(data.delete(:config))
+          type = clean_up_keys(data.delete(:type))
 
-          properties = @data
-            .delete(:properties)
+          {
+            :id => data.delete(:id),
+            :feed => data.delete(:feedId),
+            :name => data.delete(:name),
+            :properties => properties,
+            :config => config,
+            :type => type
+          }.reverse_merge(data)
+        end
+
+        private def clean_up_keys(hash)
+          hash
             .map { |(k,v)| [k.underscore.gsub(/\s/, '_'), v] }
             .to_h
             .symbolize_keys
-
-          {
-            :id         => @data.delete(:id),
-            :feed       => feed,
-            :name       => @data.delete(:name),
-            :path       => @data.delete(:path),
-            :properties => properties,
-            :type_path  => CGI.unescape(@data.delete(:resourceTypePath))
-          }.merge(@data)
         end
       end
     end

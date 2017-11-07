@@ -24,7 +24,7 @@ module ManageIQ
           resources = (entities - servers).group_by(&:feed)
 
           servers.each do |server|
-            server.properties.reverse_merge!(resources[server.feed].inject({}) { |accum, el| accum.merge(el.properties) })
+            server.config.reverse_merge!(resources[server.feed].inject({}) { |accum, el| accum.merge(el.config) })
           end
 
           entities

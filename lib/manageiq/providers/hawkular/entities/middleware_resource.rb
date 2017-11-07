@@ -7,8 +7,7 @@ module ManageIQ
           attribute(:name, String)
           attribute(:feed, String)
           attribute(:properties, Hash[Symbol, String])
-          attribute(:type_path, String)
-          attribute(:path, String)
+          attribute(:config, Hash[Symbol, String])
 
           def self.applicable?(_)
             true
