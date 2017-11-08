@@ -6,7 +6,7 @@ module ManageIQ
       module Entities
         class JavaRuntime < MiddlewareResource
           def self.applicable?(metadata)
-            metadata[:type_path].include?('Runtime MBean')
+            metadata[:type][:id] == 'Runtime MBean'
           end
         end
       end

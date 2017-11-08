@@ -14,12 +14,7 @@ module ManageIQ
         end
 
         def fetch_all_resources
-          feeds = client.inventory.list_feeds
-
-          feeds.map do |feed|
-            resources = client.inventory.list_resources_for_feed(feed, true)
-            ResourceCollection.new(resources).prepared
-          end.flatten
+          ResourceCollection.new(client.inventory.root_resources).prepared
         end
       end
     end
