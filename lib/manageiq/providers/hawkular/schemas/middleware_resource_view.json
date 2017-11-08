@@ -7,13 +7,14 @@
       "name": "name"
     },
     {
-      "name": "feed"
+      "name": "feed_id",
+      "as": "feed"
     },
     {
-      "name": "type_path"
+      "name": "properties"
     },
     {
-      "name": "path"
+      "name": "config"
     }
   ]
 }

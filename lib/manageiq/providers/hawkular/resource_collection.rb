@@ -14,20 +14,35 @@ module ManageIQ
 
         def entities
           @entities ||= data.flat_map do |d|
-            data = EntityMapper.map(d)
+            data = clean_up_keys(d)
             GenericViewMapper.matcher.find_entity_for(data).new(data)
           end
         end
 
         def prepared
           servers = entities.select { |x| x.kind_of?(Entities::MiddlewareServer) }
-          resources = (entities - servers).group_by(&:feed)
+          resources = (entities - servers).group_by(&:feed_id)
 
           servers.each do |server|
-            server.config.reverse_merge!(resources[server.feed].inject({}) { |accum, el| accum.merge(el.config) })
+            server.config.reverse_merge!(
+              resources[server.feed_id].inject({}) { |accum, el| accum.merge(el.config) }
+            )
           end
 
           entities
+        end
+
+        private def clean_up_keys(hash)
+          hash.map do |(k,v)|
+            key = k.underscore.gsub(/\s/, '_')
+
+            case v
+            when Hash
+              [key, clean_up_keys(v)]
+            else
+              [key, v]
+            end
+          end.to_h.symbolize_keys
         end
       end
     end

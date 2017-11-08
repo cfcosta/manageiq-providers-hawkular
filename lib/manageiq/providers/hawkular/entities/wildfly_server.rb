@@ -6,7 +6,7 @@ module ManageIQ
       module Entities
         # A specialized version of MiddlewareServer for servers running WildFly.
         class WildflyServer < MiddlewareServer
-          #attribute(:metrics, Array[Hash])
+          attribute(:metrics, Array[Hash])
           attribute(:bind_address, String)
           attribute(:product, String)
           attribute(:version, String)
