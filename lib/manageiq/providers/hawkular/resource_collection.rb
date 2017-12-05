@@ -1,3 +1,4 @@
+require 'generic_view_mapper'
 require_relative 'entity_mapper'
 require_relative 'entities/middleware_server'
 require_relative 'entities/wildfly_server'
@@ -24,7 +25,9 @@ module ManageIQ
           resources = (entities - servers).group_by(&:feed)
 
           servers.each do |server|
-            server.properties.reverse_merge!(resources[server.feed].inject({}) { |accum, el| accum.merge(el.properties) })
+            resources[server.feed]
+              .inject({}) { |accum, el| accum.merge(el.properties) }
+              .merge!(server.properties)
           end
 
           entities

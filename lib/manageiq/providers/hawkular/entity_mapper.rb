@@ -15,20 +15,20 @@ module ManageIQ
         def map
           feed = @data[:resourceTypePath].match(/;([0-9a-zA-Z]+)\/rt/)[1]
 
-          properties = @data
-            .delete(:properties)
-            .map { |(k,v)| [k.underscore.gsub(/\s/, '_'), v] }
-            .to_h
-            .symbolize_keys
-
           {
             :id         => @data.delete(:id),
             :feed       => feed,
             :name       => @data.delete(:name),
             :path       => @data.delete(:path),
-            :properties => properties,
+            :properties => prepare(@data.delete(:properties)),
             :type_path  => CGI.unescape(@data.delete(:resourceTypePath))
           }.merge(@data)
+        end
+
+        private
+
+        def prepare(hash)
+          hash.map { |(k, v)| [k.underscore.gsub(/\s/, '_'), v] }.to_h.symbolize_keys
         end
       end
     end
