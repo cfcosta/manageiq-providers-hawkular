@@ -25,12 +25,14 @@ module ManageIQ
           resources = (entities - servers).group_by(&:feed)
 
           servers.each do |server|
+            server.relationships = resources[server.feed]
+
             resources[server.feed]
               .inject({}) { |accum, el| accum.merge(el.properties) }
               .merge!(server.properties)
           end
 
-          entities
+          servers
         end
       end
     end
