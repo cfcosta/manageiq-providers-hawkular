@@ -10,7 +10,7 @@ module ManageIQ
         attr_reader :data
 
         def initialize(resources)
-          @data = resources.map { |r| r.instance_variable_get(:@_hash) }
+          @data = resources
         end
 
         def entities

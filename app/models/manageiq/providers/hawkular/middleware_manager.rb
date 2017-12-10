@@ -124,11 +124,13 @@ module ManageIQ::Providers
                                          default_endpoint.ssl_cert_store)
     end
 
+    def mapper(connection)
+      ManageIQ::Providers::Hawkular::Connection.new(connection)
+    end
+
     def jdbc_drivers(feed)
       with_provider_connection do |connection|
-        path = ::Hawkular::Inventory::CanonicalPath.new(:feed_id          => hawk_escape_id(feed),
-                                                        :resource_type_id => hawk_escape_id('JDBC Driver'))
-        connection.inventory.list_resources_for_type(path.to_s, :fetch_properties => true)
+        mapper(connection).fetch_server(feed).relationships.jdbc_drivers
       end
     end
 

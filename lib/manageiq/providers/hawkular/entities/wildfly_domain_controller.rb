@@ -4,15 +4,14 @@ module ManageIQ
   module Providers
     module Hawkular
       module Entities
-        class Deployment < MiddlewareResource
+        class WildflyDomainController < MiddlewareResource
           def self.applicable?(metadata)
-            metadata[:type_path].include?('Deployment')
+            metadata[:type_path].include?('Host Controller') &&
+              metadata[:properties][:process_type] == 'Domain Controller'
           end
 
           def name
-            super
-              .sub(/^.*deployment=/, '')
-              .match(/\[(.*)\]/) { |x| x[1] }
+            super.sub(/^[^\.]+\./, '')
           end
         end
       end

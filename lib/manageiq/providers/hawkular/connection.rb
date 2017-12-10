@@ -21,13 +21,17 @@ module ManageIQ
           )
         end
 
-        def fetch_all_resources
-          feeds = client.inventory.list_feeds
+        def fetch_server(feed)
+          fetch_all_resources([feed]).first
+        end
 
+        def fetch_all_resources(feeds = client.inventory.list_feeds)
           feeds.flat_map do |feed|
             resources =  client.inventory.list_resource_types(feed)
-              .map { |x| x.instance_variable_get(:@_hash)['id'] }
-              .flat_map { |x| client.inventory.list_resources_for_type(path_for(feed, x), :fetch_properties => true) }
+                               .map { |x| x.instance_variable_get(:@_hash)['id'] }
+                               .flat_map { |x| client.inventory.list_resources_for_type(path_for(feed, x), :fetch_properties => true) }
+                               .map { |x| x.instance_variable_get(:@_hash) }
+                               .map { |x| x.merge('config' => client.inventory.get_config_data_for_resource(x['path'])) }
 
             ResourceCollection.new(resources).prepared
           end

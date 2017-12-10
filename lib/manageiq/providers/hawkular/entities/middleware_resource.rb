@@ -10,6 +10,7 @@ module ManageIQ
           attribute(:name, String)
           attribute(:feed, String)
           attribute(:properties, Hash[Symbol, String])
+          attribute(:config, Hash[Symbol, String])
           attribute(:type_path, String)
           attribute(:path, String)
 
@@ -25,8 +26,12 @@ module ManageIQ
           #
           # This is used by RelationshipProxy to provide proper data filtering
           # on the relationships.
+          def self.class_key
+            name.split('::').last.underscore.pluralize.to_sym
+          end
+
           def class_key
-            self.class.name.split('::').last.underscore.pluralize.to_sym
+            self.class.class_key
           end
         end
       end

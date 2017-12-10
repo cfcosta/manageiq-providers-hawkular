@@ -1,4 +1,6 @@
 require_relative 'middleware_resource'
+require_relative '../roles/has_relationships'
+require_relative '../roles/has_machine_id'
 require 'active_support/core_ext/string'
 require 'forwardable'
 
@@ -6,41 +8,36 @@ module ManageIQ
   module Providers
     module Hawkular
       module Entities
-
-        class RelationshipProxy
-          include Enumerable
-
-          attr_reader :all
-
-          def initialize(relationships)
-            @all = relationships
-
-            prepared = relationships.group_by(&:class_key)
-            self.class.instance_exec do
-              prepared.each_pair do |key, values|
-                define_method(key) { values.uniq }
-              end
-            end
-          end
-
-          def each(*args, &block)
-            @all.each(*args, &block)
-          end
-
-          def size
-            @all.size
-          end
-        end
-
         class MiddlewareServer < MiddlewareResource
-          attr_reader :relationships
+          include Roles::HasRelationships
+          include Roles::HasMachineId
 
           def self.applicable?(_)
             false
           end
 
-          def relationships=(target)
-            @relationships = RelationshipProxy.new(target)
+          def name
+            super.match(/\[(.*)\]/) { |x| x[1] }
+          end
+
+          def prepared_name
+            name.sub(/~~$/, '').sub(/^.*?~/, '')
+          end
+
+          def hostname
+            properties[:hostname] || _('not yet available')
+          end
+
+          def product
+            properties[:product_name] || _('not yet available')
+          end
+
+          def immutable?
+            raise NotImplementedError, 'this property is not implemented for this class'
+          end
+
+          def container_url
+            raise NotImplementedError, 'this property is not implemented for this class'
           end
         end
       end

@@ -3,7 +3,7 @@ if defined?(Rails)
     module Providers
       module Hawkular
         class Engine < ::Rails::Engine
-          isolate_namespace ManageIQ::Providers::Hawkular
+          isolate_namespace(ManageIQ::Providers::Hawkular)
         end
       end
     end

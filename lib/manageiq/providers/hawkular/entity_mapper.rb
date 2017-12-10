@@ -13,7 +13,7 @@ module ManageIQ
         end
 
         def map
-          feed = @data[:resourceTypePath].match(/;([0-9a-zA-Z]+)\/rt/)[1]
+          feed = @data[:resourceTypePath].match(/;([0-9a-zA-Z.\s%]+)\/rt/)[1]
 
           {
             :id         => @data.delete(:id),
@@ -21,6 +21,7 @@ module ManageIQ
             :name       => @data.delete(:name),
             :path       => @data.delete(:path),
             :properties => prepare(@data.delete(:properties)),
+            :config     => prepare(@data.delete(:config)),
             :type_path  => CGI.unescape(@data.delete(:resourceTypePath))
           }.merge(@data)
         end
