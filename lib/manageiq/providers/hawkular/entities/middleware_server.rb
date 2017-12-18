@@ -32,7 +32,7 @@ module ManageIQ
             properties[:product_name] || _('not yet available')
           end
 
-          def immutable?
+          def in_container?
             raise NotImplementedError, 'this property is not implemented for this class'
           end
 

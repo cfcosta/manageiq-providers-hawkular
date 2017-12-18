@@ -11,8 +11,8 @@ module ManageIQ
             data[:type_path].to_s.end_with?(';WildFly Server')
           end
 
-          def immutable?
-            [:immutable, :in_container].any? { |x| properties[x] == 'true' }
+          def in_container?
+            properties[:in_container] == 'true'
           end
 
           def container_url

@@ -38,7 +38,7 @@ module ManageIQ::Providers
 
           server_from_db.assign_attributes(attributes)
 
-          if server.immutable?
+          if server.in_container?
             container = Container.find_by(:backing_ref => "docker://#{server.container_url}")
             server_from_db.lives_on = container if container
           else
