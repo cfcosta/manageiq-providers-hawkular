@@ -14,6 +14,13 @@ module ManageIQ
           attribute(:type_path, String)
           attribute(:path, String)
 
+          attr_reader :original_attributes
+
+          def initialize(attributes)
+            @original_attributes = attributes
+            super
+          end
+
           def self.applicable?(_)
             true
           end

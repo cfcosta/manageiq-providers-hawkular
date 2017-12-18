@@ -26,6 +26,7 @@ module ManageIQ
 
           servers.each do |server|
             server.relationships = resources[server.feed]
+            ap resources[server.feed].select { |x| x.is_a? Entities::Datasource }.map{ |x| x.original_attributes }
 
             resources[server.feed]
               .inject({}) { |accum, el| accum.merge(el.properties) }
