@@ -12,7 +12,7 @@ module ManageIQ
           def name
             super
               .sub(/^.*deployment=/, '')
-              .match(/\[(.*)\]/) { |x| x[1] }
+              .match(/\[(.*)\]/) { |x| x[1] } || super
           end
         end
       end
