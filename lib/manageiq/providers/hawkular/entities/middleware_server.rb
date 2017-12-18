@@ -17,11 +17,10 @@ module ManageIQ
           end
 
           def name
-            super.match(/\[(.*)\]/) { |x| x[1] }
-          end
-
-          def prepared_name
-            name.sub(/~~$/, '').sub(/^.*?~/, '')
+            super
+              .sub(/~~$/, '')
+              .sub(/^.*?~/, '')
+              .match(/\[(.*)\]/) { |x| x[1] } || super
           end
 
           def hostname
@@ -30,6 +29,12 @@ module ManageIQ
 
           def product
             properties[:product_name] || _('not yet available')
+          end
+
+          # This is meant to be subclassed when a server has a different type
+          # on the db.
+          def resource_class
+            'ManageIQ::Providers::Hawkular::MiddlewareManager::MiddlewareServer'
           end
 
           def in_container?

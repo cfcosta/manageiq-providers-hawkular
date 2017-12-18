@@ -22,21 +22,14 @@ module ManageIQ::Providers
           server_from_db = persister.middleware_servers.find_or_build(server.path)
           parse_base_item(server, server_from_db)
 
-          attributes = {
-            :name      => server.prepared_name,
+          server_from_db.assign_attributes(
+            :name      => server.name,
             :type_path => URI.escape(server.type_path),
             :hostname  => server.hostname,
-            :product   => server.product
-          }
-
-          case server.product
-          when /wildfly/i
-            attributes[:type] = 'ManageIQ::Providers::Hawkular::MiddlewareManager::MiddlewareServerWildfly'
-          when /server/i
-            attributes[:type] = 'ManageIQ::Providers::Hawkular::MiddlewareManager::MiddlewareServerEap'
-          end
-
-          server_from_db.assign_attributes(attributes)
+            :product   => server.product,
+            # TODO: Implement EAPServer
+            :type      => server.resource_class
+          )
 
           if server.in_container?
             container = Container.find_by(:backing_ref => "docker://#{server.container_url}")

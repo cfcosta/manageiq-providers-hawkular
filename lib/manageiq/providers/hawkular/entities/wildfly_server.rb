@@ -11,6 +11,10 @@ module ManageIQ
             data[:type_path].to_s.end_with?(';WildFly Server')
           end
 
+          def resource_class
+            'ManageIQ::Providers::Hawkular::MiddlewareManager::MiddlewareServerWildfly'
+          end
+
           def in_container?
             properties[:in_container] == 'true'
           end
