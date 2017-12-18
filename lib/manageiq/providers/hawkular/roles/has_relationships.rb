@@ -27,7 +27,9 @@ module ManageIQ
             end
           end
 
-          attr_reader :relationships
+          def relationships
+            @relationships ||= RelationshipProxy.new([])
+          end
 
           def relationships=(target)
             @relationships = RelationshipProxy.new(target)
